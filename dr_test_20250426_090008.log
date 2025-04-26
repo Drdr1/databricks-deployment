@@ -1,0 +1,22 @@
+[2025-04-26 09:00:08] [INFO] Databricks Disaster Recovery Test Script
+[2025-04-26 09:00:08] [INFO] =========================================
+[2025-04-26 09:00:08] [INFO] Testing Databricks CLI authentication...
+[2025-04-26 09:00:08] [WARNING] [0;33mDatabricks CLI is not authenticated. Trying to authenticate now...[0m
+[2025-04-26 09:00:08] [INFO] Authenticating with Databricks using browser-based auth
+[2025-04-26 09:00:12] [SUCCESS] Databricks authentication succeeded
+[2025-04-26 09:00:16] [TEST] Starting component failure test for: Inference Cluster
+[2025-04-26 09:00:16] [INFO] This will simulate a failure of Inference Cluster (ID: 0426-040526-vsotra0p)
+[2025-04-26 09:00:19] [ACTION] Simulating failure of Inference Cluster...
+[2025-04-26 09:00:21] [INFO] Using Databricks CLI to terminate cluster 0426-040526-vsotra0p
+[2025-04-26 09:00:21] [INFO] Permanent delete not available. Using standard delete.
+[2025-04-26 09:00:30] [SUCCESS] Cluster termination command sent successfully
+[2025-04-26 09:00:30] [ASSESSMENT] Component failure simulated. Beginning impact assessment...
+[2025-04-26 09:00:30] [MANUAL] [0;33mACTION REQUIRED: Please document the observed impact[0m
+[2025-04-26 09:00:34] [RECOVERY] Starting recovery process...
+[2025-04-26 09:00:34] [INFO] Recovery procedure: Recreate cluster using Terraform and validate jobs
+[2025-04-26 09:00:42] [INFO] Running: terraform apply -target=module.compute.databricks_cluster.inference_cluster -var-file=environments/dev.tfvars
+[2025-04-26 09:01:45] [SUCCESS] Recovery process completed in 75 seconds (1 minutes)
+[2025-04-26 09:01:45] [VALIDATION] Running validation checks...
+[2025-04-26 09:01:45] [MANUAL] [0;33mACTION REQUIRED: Validate that Inference Cluster is functioning correctly[0m
+[2025-04-26 09:02:16] [SUCCESS] Test for Inference Cluster completed successfully
+[2025-04-26 09:02:16] [INFO] DR Test completed. Results logged to dr_test_20250426_090008.log
