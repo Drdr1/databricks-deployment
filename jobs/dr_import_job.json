@@ -1,0 +1,53 @@
+{
+  "name": "DR-Inference-DB-Import",
+  "email_notifications": {
+    "on_success": [
+      "data-ops@company.com"
+    ],
+    "on_failure": [
+      "data-ops@company.com",
+      "on-call@company.com"
+    ]
+  },
+  "timeout_seconds": 7200,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "import_to_dr",
+      "description": "Import inference_db tables from blob storage to DR environment",
+      "new_cluster": {
+        "spark_version": "10.4.x-scala2.12",
+        "node_type_id": "Standard_DS3_v2",
+        "num_workers": 2,
+        "spark_conf": {
+          "spark.databricks.delta.preview.enabled": "true"
+        },
+        "azure_attributes": {
+          "availability": "ON_DEMAND_AZURE",
+          "first_on_demand": 1,
+          "spot_bid_max_price": -1
+        },
+        "spark_env_vars": {
+          "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+        }
+      },
+      "notebook_task": {
+        "notebook_path": "/notebooks/dr/inference_db_replication",
+        "base_parameters": {
+          "is_dr_env": "true"
+        }
+      },
+      "timeout_seconds": 3600,
+      "retry_on_timeout": true,
+      "max_retries": 3,
+      "min_retry_interval_millis": 300000,
+      "email_notifications": {}
+    }
+  ],
+  "schedule": {
+    "quartz_cron_expression": "0 15 * ? * * *",  
+    "timezone_id": "America/Los_Angeles",
+    "pause_status": "UNPAUSED"
+  },
+  "format": "MULTI_TASK"
+}
